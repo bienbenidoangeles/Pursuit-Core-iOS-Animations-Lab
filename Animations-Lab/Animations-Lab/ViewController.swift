@@ -43,6 +43,24 @@ class ViewController: UIViewController {
         return button
     }()
     
+    lazy var leftButton: UIButton = {
+       let button = UIButton()
+        button.setTitle("Move square left", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = .cyan
+        button.addTarget(self, action: #selector(animateSquareLeft(sender:)), for: .touchUpInside)
+        return button
+    }()
+    
+    lazy var rightButton: UIButton = {
+       let button = UIButton()
+        button.setTitle("Move square right", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = .cyan
+        button.addTarget(self, action: #selector(animateSquareRight(sender:)), for: .touchUpInside)
+        return button
+    }()
+    
     lazy var blueSquareHeightConstaint: NSLayoutConstraint = {
         blueSquare.heightAnchor.constraint(equalToConstant: 200)
     }()
@@ -59,6 +77,7 @@ class ViewController: UIViewController {
         blueSquare.centerYAnchor.constraint(equalTo: view.centerYAnchor)
     }()
     
+
     override func viewDidLoad() {
         super.viewDidLoad()
         addSubviews()
@@ -67,8 +86,8 @@ class ViewController: UIViewController {
     
     @IBAction func animateSquareUp(sender: UIButton) {
         let oldOffset = blueSquareCenterYConstraint.constant
-        blueSquareCenterYConstraint.constant = oldOffset - 150
-        UIView.animate(withDuration: 2) { [unowned self] in
+        blueSquareCenterYConstraint.constant = oldOffset - animationDistance
+        UIView.animate(withDuration: animationDuration) { [unowned self] in
             self.view.layoutIfNeeded()
         }
     }
@@ -76,8 +95,41 @@ class ViewController: UIViewController {
     @IBAction func animateSquareDown(sender: UIButton) {
         let oldOffet = blueSquareCenterYConstraint.constant
         blueSquareCenterYConstraint.constant = oldOffet + 150
-        UIView.animate(withDuration: 2) { [unowned self] in
+        UIView.animate(withDuration: animationDuration) { [unowned self] in
             self.view.layoutIfNeeded()
+        }
+    }
+    
+    @IBAction func animateSquareLeft(sender: UIButton) {
+        let oldOffet = blueSquareCenterXConstraint.constant
+        blueSquareCenterXConstraint.constant = oldOffet - 150
+        UIView.animate(withDuration: animationDuration) { [unowned self] in
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    @IBAction func animateSquareRight(sender: UIButton) {
+        let oldOffet = blueSquareCenterXConstraint.constant
+        blueSquareCenterXConstraint.constant = oldOffet + 150
+        UIView.animate(withDuration: animationDuration) { [unowned self] in
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    var animationDuration: Double = 1
+    var animationDistance:CGFloat = 150
+    
+    private func loadInSettingsValues(){
+        if let animationDuration = UserDefaults.standard.object(forKey: UserDefaultsKeys.animationTime) as? Double{
+            self.animationDuration = animationDuration
+        }
+        
+        if let animationDistance = UserDefaults.standard.object(forKey: UserDefaultsKeys.animationDistance) as? Double{
+            self.animationDistance = CGFloat(animationDistance)
+        }
+        
+        if let animationOption = UserDefaults.standard.object(forKey: UserDefaultsKeys.animationOption) as? String{
+            
         }
     }
     
