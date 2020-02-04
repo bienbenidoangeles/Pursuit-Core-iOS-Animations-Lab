@@ -82,6 +82,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         addSubviews()
         configureConstraints()
+        loadInSettingsValues()
     }
     
     @IBAction func animateSquareUp(sender: UIButton) {
@@ -118,6 +119,8 @@ class ViewController: UIViewController {
     
     var animationDuration: Double = 1
     var animationDistance:CGFloat = 150
+    var animationOptions:[UIView.AnimationOptions] = [.autoreverse, .transitionFlipFromLeft, .curveLinear, .transitionFlipFromTop, .transitionCrossDissolve]
+    var animationOption:UIView.AnimationOptions!
     
     private func loadInSettingsValues(){
         if let animationDuration = UserDefaults.standard.object(forKey: UserDefaultsKeys.animationTime) as? Double{
@@ -128,8 +131,8 @@ class ViewController: UIViewController {
             self.animationDistance = CGFloat(animationDistance)
         }
         
-        if let animationOption = UserDefaults.standard.object(forKey: UserDefaultsKeys.animationOption) as? String{
-            
+        if let animationOption = UserDefaults.standard.object(forKey: UserDefaultsKeys.animationOption) as? Int{
+            self.animationOption = animationOptions[animationOption]
         }
     }
     

@@ -60,7 +60,7 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         delegatesAndDatasources()
-        updateUI()
+        loadUI()
     }
     
     @objc private func animationTimerStepperChanged(){
@@ -73,9 +73,7 @@ class SettingsViewController: UIViewController {
         updateUI()
     }
    
-    private func updateUI() {
-        
-        
+    private func loadUI(){
         if let savedTimeStepperValue = UserDefaults.standard.object(forKey: UserDefaultsKeys.animationTime) as? Double{
             animationTimeStepper.value = savedTimeStepperValue
         }
@@ -88,13 +86,29 @@ class SettingsViewController: UIViewController {
             movementDistanceStepper.value = savedDistanceValue
         }
         
+        updateUI()
+    }
+    
+    private func updateUI(){
         userFeedbackLabel.text = "Animation Time: \(animationTimeStepper.value)\nAnimation Distance: \(movementDistanceStepper.value)\nAnimation Option: \(components[pickerView.selectedRow(inComponent: 0)])"
-        
     }
     
     private func delegatesAndDatasources(){
         pickerView.delegate = self
         pickerView.dataSource = self
+    }
+    
+    private func configureConstrainsts(){
+        configureUserFeedBackLabel()
+    }
+    
+    private func configureUserFeedBackLabel(){
+        view.addSubview(userFeedbackLabel)
+        userFeedbackLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            userFeedbackLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
+            userFeedbackLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
     }
 
 }
