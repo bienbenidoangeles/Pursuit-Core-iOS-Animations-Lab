@@ -102,33 +102,43 @@ class ViewController: UIViewController {
     @IBAction func animateSquareUp(sender: UIButton) {
         let oldOffset = blueSquareCenterYConstraint.constant
         blueSquareCenterYConstraint.constant = oldOffset - animationDistance
-        UIView.animate(withDuration: animationDuration) { [unowned self] in
+        
+        UIView.transition(with: blueSquare, duration: animationDuration, options: animationOption, animations: {
+            [unowned self] in
             self.view.layoutIfNeeded()
-        }
+        }, completion: nil)
+        
     }
     
     @IBAction func animateSquareDown(sender: UIButton) {
         let oldOffet = blueSquareCenterYConstraint.constant
         blueSquareCenterYConstraint.constant = oldOffet + animationDistance
-        UIView.animate(withDuration: animationDuration) { [unowned self] in
+        UIView.transition(with: blueSquare, duration: animationDuration, options: animationOption, animations: {
+            [unowned self] in
             self.view.layoutIfNeeded()
-        }
+        }, completion: nil)
+        
     }
     
     @IBAction func animateSquareLeft(sender: UIButton) {
         let oldOffet = blueSquareCenterXConstraint.constant
         blueSquareCenterXConstraint.constant = oldOffet - animationDistance
-        UIView.animate(withDuration: animationDuration) { [unowned self] in
+        UIView.transition(with: blueSquare, duration: animationDuration, options: animationOption, animations: {
+            [unowned self] in
             self.view.layoutIfNeeded()
-        }
+        }, completion: nil)
+        
     }
     
     @IBAction func animateSquareRight(sender: UIButton) {
         let oldOffet = blueSquareCenterXConstraint.constant
         blueSquareCenterXConstraint.constant = oldOffet + animationDistance
-        UIView.animate(withDuration: animationDuration) { [unowned self] in
+        
+        UIView.transition(with: blueSquare, duration: animationDuration, options: animationOption, animations: {
+            [unowned self] in
             self.view.layoutIfNeeded()
-        }
+        }, completion: nil)
+
     }
     
     var animationDuration: Double = 1
