@@ -80,6 +80,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
         addSubviews()
         configureConstraints()
         loadInSettingsValues()
@@ -87,7 +88,7 @@ class ViewController: UIViewController {
     
     @IBAction func animateSquareUp(sender: UIButton) {
         let oldOffset = blueSquareCenterYConstraint.constant
-        blueSquareCenterYConstraint.constant = oldOffset - animationDistance
+        blueSquareCenterYConstraint.constant = oldOffset - 150
         UIView.animate(withDuration: animationDuration) { [unowned self] in
             self.view.layoutIfNeeded()
         }
@@ -145,12 +146,16 @@ class ViewController: UIViewController {
     private func addStackViewSubviews() {
         buttonStackView.addSubview(upButton)
         buttonStackView.addSubview(downButton)
+        buttonStackView.addSubview(leftButton)
+        buttonStackView.addSubview(rightButton)
     }
     
     private func configureConstraints() {
         constrainBlueSquare()
-        constrainUpButton()
         constrainDownButton()
+        constrainUpButton()
+        constrainRightButton()
+        constraintLeftButton()
         constrainButtonStackView()
     }
     
@@ -158,11 +163,36 @@ class ViewController: UIViewController {
         upButton.translatesAutoresizingMaskIntoConstraints = false
         upButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         upButton.trailingAnchor.constraint(equalTo: buttonStackView.trailingAnchor).isActive = true
+        upButton.topAnchor.constraint(equalTo: buttonStackView.topAnchor).isActive = true
     }
     
     private func constrainDownButton() {
         downButton.translatesAutoresizingMaskIntoConstraints = false
         downButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        downButton.topAnchor.constraint(equalTo: buttonStackView.topAnchor).isActive = true
+        downButton.leadingAnchor.constraint(equalTo: buttonStackView.leadingAnchor).isActive = true
+    }
+    
+    private func constraintLeftButton() {
+        leftButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            leftButton.heightAnchor.constraint(equalToConstant: 50),
+            leftButton.leadingAnchor.constraint(equalTo: buttonStackView.leadingAnchor),
+            leftButton.topAnchor.constraint(equalTo: downButton.bottomAnchor, constant: 8),
+            leftButton.bottomAnchor.constraint(equalTo: buttonStackView.bottomAnchor),
+            //leftButton.widthAnchor.constraint(equalToConstant: 100)
+        ])
+    }
+    
+    private func constrainRightButton(){
+        rightButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            rightButton.heightAnchor.constraint(equalToConstant: 50),
+            rightButton.trailingAnchor.constraint(equalTo: buttonStackView.trailingAnchor),
+            rightButton.topAnchor.constraint(equalTo: upButton.bottomAnchor, constant: 8),
+            rightButton.bottomAnchor.constraint(equalTo: buttonStackView.bottomAnchor),
+            //rightButton.widthAnchor.constraint(equalToConstant: 100)
+        ])
     }
     
     private func constrainBlueSquare() {
@@ -180,7 +210,7 @@ class ViewController: UIViewController {
         NSLayoutConstraint.activate([
             buttonStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             buttonStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100),
-            buttonStackView.heightAnchor.constraint(equalToConstant: 50),
+            buttonStackView.heightAnchor.constraint(equalToConstant: 108),
             buttonStackView.widthAnchor.constraint(equalTo: view.widthAnchor),
         ])
     }
