@@ -24,7 +24,13 @@ enum AnimationOptions {
     case transitionCrossDissolve(String)
 }
 
+protocol Settings {
+    func applySettings(animationTime: Double, animationDistance: Double, animationOption: Int)
+}
+
 class SettingsViewController: UIViewController {
+    
+    var delegate: Settings!
            
     lazy var userFeedbackLabel: UILabel = {
         let label = UILabel()
@@ -44,7 +50,7 @@ class SettingsViewController: UIViewController {
     
     lazy var movementDistanceStepper: UIStepper = {
         let stepper = UIStepper()
-        stepper.maximumValue = 250
+        stepper.maximumValue = 350
         stepper.minimumValue = 50.0
         stepper.stepValue = 10
         stepper.addTarget(self, action: #selector(movementDistanceStepperChanged), for: .valueChanged)
@@ -102,6 +108,7 @@ class SettingsViewController: UIViewController {
     
     private func updateUI(){
         userFeedbackLabel.text = "Animation Time: \(animationTimeStepper.value)\nAnimation Distance: \(movementDistanceStepper.value)\nAnimation Option: \(components[pickerView.selectedRow(inComponent: 0)])"
+        delegate?.applySettings(animationTime: animationTimeStepper.value, animationDistance: movementDistanceStepper.value, animationOption: pickerView.selectedRow(inComponent: 0))
     }
     
     private func delegatesAndDatasources(){

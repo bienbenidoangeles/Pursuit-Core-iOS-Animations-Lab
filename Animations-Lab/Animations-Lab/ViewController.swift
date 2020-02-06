@@ -83,8 +83,8 @@ class ViewController: UIViewController {
         view.backgroundColor = .systemBackground
         addSubviews()
         configureConstraints()
-        loadInSettingsValues()
         addBarButtonItems()
+        loadInSettingsValues()
     }
     
     private func addBarButtonItems(){
@@ -95,12 +95,13 @@ class ViewController: UIViewController {
     @objc
     private func navigateToSettingsButton(){
         let settingsVC = SettingsViewController()
+        settingsVC.delegate = self
         navigationController?.pushViewController(settingsVC, animated: true)
     }
     
     @IBAction func animateSquareUp(sender: UIButton) {
         let oldOffset = blueSquareCenterYConstraint.constant
-        blueSquareCenterYConstraint.constant = oldOffset - 150
+        blueSquareCenterYConstraint.constant = oldOffset - animationDistance
         UIView.animate(withDuration: animationDuration) { [unowned self] in
             self.view.layoutIfNeeded()
         }
@@ -108,7 +109,7 @@ class ViewController: UIViewController {
     
     @IBAction func animateSquareDown(sender: UIButton) {
         let oldOffet = blueSquareCenterYConstraint.constant
-        blueSquareCenterYConstraint.constant = oldOffet + 150
+        blueSquareCenterYConstraint.constant = oldOffet + animationDistance
         UIView.animate(withDuration: animationDuration) { [unowned self] in
             self.view.layoutIfNeeded()
         }
@@ -116,7 +117,7 @@ class ViewController: UIViewController {
     
     @IBAction func animateSquareLeft(sender: UIButton) {
         let oldOffet = blueSquareCenterXConstraint.constant
-        blueSquareCenterXConstraint.constant = oldOffet - 150
+        blueSquareCenterXConstraint.constant = oldOffet - animationDistance
         UIView.animate(withDuration: animationDuration) { [unowned self] in
             self.view.layoutIfNeeded()
         }
@@ -124,7 +125,7 @@ class ViewController: UIViewController {
     
     @IBAction func animateSquareRight(sender: UIButton) {
         let oldOffet = blueSquareCenterXConstraint.constant
-        blueSquareCenterXConstraint.constant = oldOffet + 150
+        blueSquareCenterXConstraint.constant = oldOffet + animationDistance
         UIView.animate(withDuration: animationDuration) { [unowned self] in
             self.view.layoutIfNeeded()
         }
@@ -228,4 +229,10 @@ class ViewController: UIViewController {
     }
 }
 
-
+extension ViewController: Settings{
+    func applySettings(animationTime: Double, animationDistance: Double, animationOption: Int) {
+        self.animationDuration = animationTime
+        self.animationDistance = CGFloat(animationDistance)
+        self.animationOption = animationOptions[animationOption]
+    }
+}
