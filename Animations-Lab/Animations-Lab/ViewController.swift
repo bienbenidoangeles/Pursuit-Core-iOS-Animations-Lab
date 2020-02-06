@@ -84,6 +84,18 @@ class ViewController: UIViewController {
         addSubviews()
         configureConstraints()
         loadInSettingsValues()
+        addBarButtonItems()
+    }
+    
+    private func addBarButtonItems(){
+        let saveBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: self, action: #selector(navigateToSettingsButton))
+        self.navigationItem.rightBarButtonItem = saveBarButtonItem
+    }
+    
+    @objc
+    private func navigateToSettingsButton(){
+        let settingsVC = SettingsViewController()
+        navigationController?.pushViewController(settingsVC, animated: true)
     }
     
     @IBAction func animateSquareUp(sender: UIButton) {
