@@ -68,6 +68,7 @@ class SettingsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureConstrainsts()
         delegatesAndDatasources()
         loadUI()
         view.backgroundColor = .systemBackground
@@ -84,20 +85,18 @@ class SettingsViewController: UIViewController {
     }
    
     private func loadUI(){
-//        if let savedTimeStepperValue = UserDefaults.standard.object(forKey: UserDefaultsKeys.animationTime) as? Double{
-//            animationTimeStepper.value = savedTimeStepperValue
-//        } 
-//
-//        if let savedOption = UserDefaults.standard.object(forKey: UserDefaultsKeys.animationOption) as? Int{
-//            pickerView.selectRow(savedOption, inComponent: savedOption, animated: true)
-//        }
-//
-//        if let savedDistanceValue = UserDefaults.standard.object(forKey: UserDefaultsKeys.animationDistance) as? Double{
-//            movementDistanceStepper.value = savedDistanceValue
-//        }
+        if let savedTimeStepperValue = UserDefaults.standard.object(forKey: UserDefaultsKeys.animationTime) as? Double{
+            animationTimeStepper.value = savedTimeStepperValue
+        } 
+
+        if let savedOption = UserDefaults.standard.object(forKey: UserDefaultsKeys.animationOption) as? Int{
+            pickerView.selectRow(savedOption, inComponent: 0, animated: true)
+        }
+
+        if let savedDistanceValue = UserDefaults.standard.object(forKey: UserDefaultsKeys.animationDistance) as? Double{
+            movementDistanceStepper.value = savedDistanceValue
+        }
         
-        delegatesAndDatasources()
-        configureConstrainsts()
         updateUI()
     }
     
@@ -112,8 +111,7 @@ class SettingsViewController: UIViewController {
     
     private func configureConstrainsts(){
         configureUserFeedBackLabel()
-        configureTimeStepper()
-        configureDistanceStepper()
+        configureStackView()
         configurePickerView()
     }
     
@@ -127,21 +125,15 @@ class SettingsViewController: UIViewController {
         ])
     }
     
-    private func configureTimeStepper(){
-        view.addSubview(animationTimeStepper)
-        animationTimeStepper.translatesAutoresizingMaskIntoConstraints = false
+    private func configureStackView(){
+        view.addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.addArrangedSubview(animationTimeStepper)
+        stackView.addArrangedSubview(movementDistanceStepper)
         NSLayoutConstraint.activate([
-            animationTimeStepper.topAnchor.constraint(equalTo: userFeedbackLabel.bottomAnchor, constant: 8),
-            animationTimeStepper.centerXAnchor.constraint(equalTo: userFeedbackLabel.centerXAnchor),
-        ])
-    }
-    
-    private func configureDistanceStepper(){
-        view.addSubview(movementDistanceStepper)
-        movementDistanceStepper.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            movementDistanceStepper.topAnchor.constraint(equalTo: animationTimeStepper.bottomAnchor, constant: 8),
-            movementDistanceStepper.centerXAnchor.constraint(equalTo: animationTimeStepper.centerXAnchor),
+            stackView.topAnchor.constraint(equalTo: userFeedbackLabel.bottomAnchor, constant: 8),
+            stackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.1),
+            stackView.centerXAnchor.constraint(equalTo: userFeedbackLabel.centerXAnchor)
         ])
     }
     
@@ -149,10 +141,13 @@ class SettingsViewController: UIViewController {
         view.addSubview(pickerView)
         pickerView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            pickerView.topAnchor.constraint(equalTo: movementDistanceStepper.bottomAnchor, constant: 8),
-            pickerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 8)
+            pickerView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 8),
+            pickerView.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
+            pickerView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.4)
         ])
     }
+    
+    
 
 }
 
